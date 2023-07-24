@@ -15,16 +15,17 @@ import './Form.css'
   
     };
      this.HandleSubmit=(event)=>{
-    event.PreventDefault();
+    event.preventDefault();
     const {task}=this.state
-    };
-   
-    
-  
     this.setState((prevProp)=>({
       TaskList:[...prevProp.TaskList,task],
       task:'',
     }));
+    };
+   
+    
+  
+    
   };
   
   render() {
@@ -37,7 +38,13 @@ import './Form.css'
     <button  className='submit-btn' type='submit'>Add Task</button>
     
     </form>
-
+    
+      
+      
+        
+        
+      
+    
       </div>
     )
   }
