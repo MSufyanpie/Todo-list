@@ -1,0 +1,13 @@
+.all-tasks{
+    display: inline-block;
+    margin-top: 5%;
+    text-align: center;
+    margin-left: 30%;
+    background-color: whitesmoke;
+    font-size: 20px;
+    border-radius: 4px solid rgb(94, 9, 9);
+    width: 500px;
+    height: 50px;
+    border-style: outset;
+    
+}
