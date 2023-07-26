@@ -48,7 +48,7 @@ class Form extends Component {
     this.HandleCancel = () => {
       this.setState({
         isEditing: false,
-        tasktoEdit: "",
+        
         
       });
     };
