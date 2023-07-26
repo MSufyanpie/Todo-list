@@ -21,7 +21,7 @@ class Form extends Component {
       task: "",
       isEditing: false,
       tasktoEdit: "",
-      editedTaskIndex: -1, 
+      editedTaskIndex: "", 
     };
 
     this.HandleEdit = (index) => { 
@@ -111,13 +111,13 @@ class Form extends Component {
                 <EditForm
                   task={tasktoEdit}
                   HandleCancel={this.HandleCancel}
-                  HandleSave={this.handleSave} // Pass the handleSave method to EditForm
+                  HandleSave={this.handleSave} 
                   handleChange={this.handleEditChange}
                 />
                 ) : (
                   <div>
                     <AllTasks tasks={task} />
-                    <button className="edit-btn" onClick={() => this.HandleEdit(index)}> {/* Pass index */}
+                    <button className="edit-btn" onClick={() => this.HandleEdit(index)}> 
                       <AiFillEdit />
                       Edit
                     </button>

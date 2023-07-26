@@ -12,7 +12,7 @@ export default class EditForm extends Component {
 
   handleSave = () => {
     const { tasktoEdit } = this.state;
-    this.props.HandleSave(tasktoEdit); // Pass the updated task description to the parent component
+    this.props.HandleSave(tasktoEdit); 
   };
 
   handleChange = (event) => {
@@ -23,16 +23,7 @@ export default class EditForm extends Component {
   };
 
 
-  // handleSave=()=>{
-    
-  // }
-
-  // handleChange = (event) => {
-  //   const { value } = event.target;
-  //   this.setState({
-  //     tasktoEdit: value,
-  //   });
-  // };
+  
 
   render() {
     return (
