@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import './EditForm.css'
 
 export default class EditForm extends Component {
   constructor(props) {
@@ -8,12 +9,30 @@ export default class EditForm extends Component {
     };
   }
 
-  HandleChange = (event) => {
+
+  handleSave = () => {
+    const { tasktoEdit } = this.state;
+    this.props.HandleSave(tasktoEdit); // Pass the updated task description to the parent component
+  };
+
+  handleChange = (event) => {
     const { value } = event.target;
     this.setState({
       tasktoEdit: value,
     });
   };
+
+
+  // handleSave=()=>{
+    
+  // }
+
+  // handleChange = (event) => {
+  //   const { value } = event.target;
+  //   this.setState({
+  //     tasktoEdit: value,
+  //   });
+  // };
 
   render() {
     return (
@@ -28,14 +47,19 @@ export default class EditForm extends Component {
             id="form-input"
             name="task"
             type="text"
-            value={this.state.tasktoEdit}
-            onChange={this.HandleChange}
+            defaultValue={this.state.tasktoEdit}
+            onChange={this.handleChange}
           ></input>
           <br></br>
-          <button className="save-btn" type="button" onClick={this.props.HandleSave}>
+          <button className="save-btn" type="button" onClick={this.handleSave}>
+          
             Save
           </button>
-          <button className="cancel-btn" type="button" onClick={this.props.HandleCancel}>
+          <button
+            className="cancel-btn"
+            type="button"
+            onClick={this.props.HandleCancel}
+          >
             Cancel
           </button>
         </form>

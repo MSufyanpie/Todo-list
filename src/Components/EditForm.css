@@ -1,0 +1,22 @@
+.save-btn{
+    background-color: rgb(43, 212, 21);
+    color: white;
+    width: 70px;
+    height: 40px;
+    margin-top: 2%;
+    margin-left: 1%;
+}
+.cancel-btn{
+    background-color: rgb(255, 0, 0);
+    color: white;
+    width: 70px;
+    height: 40px;
+    margin-top: 2%;
+    margin-left: 1%;
+}
+.cancel-btn:hover{
+    background-color: rgb(190, 22, 22);
+}
+.save-btn:hover{
+    background-color: rgb(13, 136, 13);
+}

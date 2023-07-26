@@ -21,27 +21,27 @@ class Form extends Component {
       task: "",
       isEditing: false,
       tasktoEdit: "",
-      editedTaskIndex: -1, // To store the index of the task being edited
+      editedTaskIndex: -1, 
     };
 
-    this.HandleEdit = (index) => { // Modified to pass the index
+    this.HandleEdit = (index) => { 
       const tasktoEdit = this.state.TaskList[index];
       this.setState({
         isEditing: true,
         tasktoEdit: tasktoEdit,
-        editedTaskIndex: index, // Store the index of the task being edited
+        editedTaskIndex: index, 
       });
     };
 
-    this.HandleSave = () => {
-      const { TaskList, tasktoEdit, editedTaskIndex } = this.state;
+    this.handleSave = (updatedTask) => {
+      const { editedTaskIndex, TaskList } = this.state;
       const updatedTaskList = [...TaskList];
-      updatedTaskList[editedTaskIndex] = tasktoEdit;
+      updatedTaskList[editedTaskIndex] = updatedTask;
       this.setState({
         TaskList: updatedTaskList,
         isEditing: false,
         tasktoEdit: "",
-        editedTaskIndex: -1, // Reset the editedTaskIndex
+        
       });
     };
 
@@ -49,7 +49,7 @@ class Form extends Component {
       this.setState({
         isEditing: false,
         tasktoEdit: "",
-        editedTaskIndex: -1, // Reset the editedTaskIndex
+        
       });
     };
   
@@ -106,14 +106,14 @@ class Form extends Component {
         <div>
           {TaskList.map((task, index) => {
             return (
-              <div key={index}> {/* Add a wrapping div with a key */}
-                {isEditing && index === this.state.editedTaskIndex ? ( 
-                  <EditForm
-                    task={tasktoEdit}
-                    HandleCancel={this.HandleCancel}
-                    HandleSave={this.HandleSave}
-                    handleChange={this.handleEditChange}
-                  />
+              <div key={index}>
+              {isEditing && index === this.state.editedTaskIndex ? (
+                <EditForm
+                  task={tasktoEdit}
+                  HandleCancel={this.HandleCancel}
+                  HandleSave={this.handleSave} // Pass the handleSave method to EditForm
+                  handleChange={this.handleEditChange}
+                />
                 ) : (
                   <div>
                     <AllTasks tasks={task} />
