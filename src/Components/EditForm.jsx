@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import './EditForm.css'
+import '../styles/eForm.css'
 
 export default class EditForm extends Component {
   constructor(props) {
@@ -11,15 +11,26 @@ export default class EditForm extends Component {
 
 
   handleSave = () => {
+
     const { tasktoEdit } = this.state;
+    const description=tasktoEdit.trim()
+    if(description===""){
+      alert('Field cannot be empty') 
+    return;}
+    
     this.props.HandleSave(tasktoEdit); 
+    
+   
   };
 
   handleChange = (event) => {
     const { value } = event.target;
+    
+    
     this.setState({
       tasktoEdit: value,
     });
+    
   };
 
 
@@ -34,15 +45,19 @@ export default class EditForm extends Component {
           </label>
           <br></br>
           <input
+            
+            
             ref={(input) => (this.taskInput = input)}
             id="form-input"
             name="task"
             type="text"
+            
             defaultValue={this.state.tasktoEdit}
             onChange={this.handleChange}
           ></input>
           <br></br>
-          <button className="save-btn" type="button" onClick={this.handleSave}>
+          <button className="save-btn" type="button" onClick={this.handleSave}
+          style={{borderRadius:'3'}}>
           
             Save
           </button>

@@ -4,7 +4,6 @@ import AllTasks from "./AllTasks";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import EditForm from "./EditForm";
 class Form extends Component {
-
   handleEditChange = (event) => {
     const { value } = event.target;
     this.setState((prevState) => ({
@@ -16,20 +15,23 @@ class Form extends Component {
   };
   constructor(props) {
     super(props);
+
     this.state = {
       TaskList: [],
       task: "",
       isEditing: false,
       tasktoEdit: "",
-      editedTaskIndex: "", 
+      editedTaskIndex: "",
+      Len: "",
+      Length: 0,
     };
 
-    this.HandleEdit = (index) => { 
+    this.HandleEdit = (index) => {
       const tasktoEdit = this.state.TaskList[index];
       this.setState({
         isEditing: true,
         tasktoEdit: tasktoEdit,
-        editedTaskIndex: index, 
+        editedTaskIndex: index,
       });
     };
 
@@ -37,22 +39,20 @@ class Form extends Component {
       const { editedTaskIndex, TaskList } = this.state;
       const updatedTaskList = [...TaskList];
       updatedTaskList[editedTaskIndex] = updatedTask;
+
       this.setState({
         TaskList: updatedTaskList,
         isEditing: false,
         tasktoEdit: "",
-        
+        Len: TaskList.length(),
       });
     };
 
     this.HandleCancel = () => {
       this.setState({
         isEditing: false,
-        
-        
       });
     };
-  
 
     this.HandleChange = (event) => {
       const { value } = event.target;
@@ -74,14 +74,38 @@ class Form extends Component {
         TaskList: [...prevState.TaskList.filter((task, i) => i !== index)],
       }));
     };
+    this.MoveDownHandler = (index) => {
+       const{TaskList}=this.state
+      
+       const updatedTaskList=[...TaskList]
+      const temp = updatedTaskList[index];
+      updatedTaskList[index] = updatedTaskList[index + 1];
+      updatedTaskList[index + 1] = temp;
+      this.setState({
+        TaskList: updatedTaskList,
+      });
+    
+    };
+    this.MoveUpHandler = (index) => {
+      const{TaskList}=this.state
+      
+       const updatedTaskList=[...TaskList]
+      const temp = updatedTaskList[index];
+      updatedTaskList[index] = updatedTaskList[index - 1];
+      updatedTaskList[index - 1] = temp;
+      this.setState({
+        TaskList: updatedTaskList,
+      });
+    
+    };
   }
 
   render() {
-    const { TaskList, task, isEditing, tasktoEdit } = this.state;
+    const { TaskList, task, isEditing, tasktoEdit, Len,  } = this.state;
+    
     return (
       <>
-     
-          <div className="flex-container">
+        <div className="flex-container">
           <h1 className="todo-list">TODO-LIST</h1>
           <form className="Todo-form" onSubmit={this.HandleSubmit}>
             <label className="form-label">
@@ -93,6 +117,7 @@ class Form extends Component {
               name="task"
               type="text"
               value={task}
+              required
               onChange={this.HandleChange}
             ></input>
             <br></br>
@@ -100,24 +125,27 @@ class Form extends Component {
               Add Task
             </button>
           </form>
-      
-
         </div>
         <div>
-          {TaskList.map((task, index) => {
+          {TaskList.reverse().map((task, index) => {
+            
             return (
+              
               <div key={index}>
-              {isEditing && index === this.state.editedTaskIndex ? (
-                <EditForm
-                  task={tasktoEdit}
-                  HandleCancel={this.HandleCancel}
-                  HandleSave={this.handleSave} 
-                  handleChange={this.handleEditChange}
-                />
+                {isEditing && index === this.state.editedTaskIndex ? (
+                  <EditForm
+                    task={tasktoEdit}
+                    HandleCancel={this.HandleCancel}
+                    HandleSave={this.handleSave}
+                    handleChange={this.handleEditChange}
+                  />
                 ) : (
-                  <div>
+                  <div key={index}>
                     <AllTasks tasks={task} />
-                    <button className="edit-btn" onClick={() => this.HandleEdit(index)}> 
+                    <button
+                      className="edit-btn"
+                      onClick={() => this.HandleEdit(index)}
+                    >
                       <AiFillEdit />
                       Edit
                     </button>
@@ -128,6 +156,58 @@ class Form extends Component {
                       <AiFillDelete />
                       Delete
                     </button>
+                    {Len !== 1 &&
+                    index !== 0 &&
+                    index !== TaskList.length - 1 ? (
+                      <>
+                        <button
+                          style={{ marginLeft: 10 }}
+                          onClick={() => {
+                            this.MoveUpHandler(index);
+                          }}
+                        >
+                          MoveUp
+                        </button>
+                        <button
+                          style={{ marginLeft: 5 }}
+                          onClick={() => {
+                            this.MoveDownHandler(index);
+                          }}
+                        >
+                          MoveDown
+                        </button>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                    {index === 0 && TaskList.length > 1 ? (
+                      <>
+                        <button
+                          style={{ marginLeft: 5 }}
+                          onClick={() => {
+                            this.MoveDownHandler(index);
+                          }}
+                        >
+                          MoveDown
+                        </button>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                    {index === TaskList.length - 1 && index !== 0 ? (
+                      <>
+                        <button
+                          style={{ marginLeft: 10 }}
+                          onClick={() => {
+                            this.MoveUpHandler(index);
+                          }}
+                        >
+                          MoveUp
+                        </button>
+                      </>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 )}
               </div>
@@ -139,6 +219,3 @@ class Form extends Component {
   }
 }
 export default Form;
-
-
-

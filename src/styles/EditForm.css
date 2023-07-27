@@ -5,6 +5,7 @@
     height: 40px;
     margin-top: 2%;
     margin-left: 1%;
+    
 }
 .cancel-btn{
     background-color: rgb(255, 0, 0);
@@ -13,10 +14,14 @@
     height: 40px;
     margin-top: 2%;
     margin-left: 1%;
+    
 }
 .cancel-btn:hover{
     background-color: rgb(190, 22, 22);
+    border-radius: 30px;
 }
 .save-btn:hover{
     background-color: rgb(13, 136, 13);
+    border-radius: 30px;
+    
 }
