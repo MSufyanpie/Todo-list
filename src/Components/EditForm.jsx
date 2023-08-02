@@ -39,13 +39,14 @@ export default class EditForm extends Component {
   render() {
     return (
       <div className="flex-container">
+        <h1 className="todo-list">TODO-LIST</h1>
         <form className="Todo-form">
           <label className="form-label">
             <b>Enter your Task Description</b>
           </label>
           <br></br>
           <input
-            
+            className="form-input"
             
             ref={(input) => (this.taskInput = input)}
             id="form-input"

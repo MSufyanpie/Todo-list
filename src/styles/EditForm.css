@@ -25,3 +25,13 @@
     border-radius: 30px;
     
 }
+.flex-container:hover{
+    box-shadow: 0px 3px 5px black;
+    
+}
+.form-input:focus{
+    background-color: lightblue
+}
+.form-input:hover{
+    box-shadow: 0px 10px  18px  black;
+}
