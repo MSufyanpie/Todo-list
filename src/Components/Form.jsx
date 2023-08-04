@@ -29,7 +29,7 @@ class Form extends Component {
       // isAscending:false,
       // isDescending:false,
       // 
-      SelectedOption:''
+      SelectedOption:""
     };
 
     this.HandleEdit = (index) => {
@@ -70,7 +70,7 @@ class Form extends Component {
       event.preventDefault();
       const { task } = this.state;
       this.setState((prevProp) => ({
-        TaskList: [task, ...prevProp.TaskList],
+        TaskList: [ task,...prevProp.TaskList,],
         task: "",
       }));
     };
@@ -102,22 +102,63 @@ class Form extends Component {
         TaskList: updatedTaskList,
       });
     };
-    // this.AtoZHandler=()=>{
-    //   this.setState({
-    //     isAscending:true
-        
-    //   })
 
-    // };
-    // this.ZtoAHandler=()=>{
-  
-    // };
+    this.FirstMoveUpHandler=(index)=>{
+      const {TaskList}=this.state
+      const updatedTaskList = [...TaskList];
+      const temp = updatedTaskList[index];
+      updatedTaskList.shift(temp)
+      updatedTaskList.push(temp)
+      
+      this.setState({
+        TaskList: updatedTaskList,
+      });
+      
+
+    }
+    this.LastMoveDownHandler=(index)=>{
+      const {TaskList}=this.state
+      const updatedTaskList = [...TaskList];
+      const temp = updatedTaskList[index];
+      updatedTaskList.pop(temp)
+      updatedTaskList.unshift(temp)
+      
+      this.setState({
+        TaskList: updatedTaskList,
+      });
+      
+
+    }
+    
     this.SelectOptionHandler=(event)=>{
-       this.setState({
+      const {TaskList}=this.state 
+      const updatedList=[...TaskList.sort()]
+      const updatedList2=[...updatedList.reverse()]
+       
+      this.setState({
         SelectedOption:event.target.value
        })
+      console.log(this.state.SelectedOption)
+      {this.state.SelectedOption=='AtoZ' ?(
+          this.setState({
+          TaskList:updatedList
+         }))
+      : this.state.SelectedOption=='ZtoA'?(
+          this.setState({
+          TaskList:updatedList2
+         }))
+        :(this.setState({
+          TaskList:TaskList
+         }))
+        }
+  
+  
+  
+  
+      
     }
   }
+  
 
   render() {
     const { TaskList, task, isEditing, tasktoEdit,  SelectedOption} = this.state;
@@ -153,14 +194,16 @@ class Form extends Component {
                 Add Task
               </button>
             </form>
+            
           </div>
+ 
+
+ 
         )}
         <div  style={{paddingTop:'30px',paddingLeft:'800px' ,width:'1200px'}}>
             <select class="form-select" aria-label="Default select example" onChange={this.SelectOptionHandler} value={SelectedOption}>
 
-          
-
-              <option value='0'>Open this select menu</option>
+              <option value='0' selected>Open this select menu</option>
               <option value="AtoZ">A to Z Alphabetically</option>
               <option value="ZtoA" >Z to A Alphabetically</option>
               
@@ -169,8 +212,8 @@ class Form extends Component {
         <div>
           
           
-          {SelectedOption=='AtoZ'   ?
-           (TaskList.sort().map((task, index) => {
+          
+           {TaskList.map((task, index) => {
             return (
               <div key={index}>
                 {/* <div key={index}> */}
@@ -190,12 +233,12 @@ class Form extends Component {
                     Delete
                   </button>
 
-                  {index !== 0 && index !== TaskList.length - 1 ? (
+                  {index == 0  ? (
                     <>
                       <button
                         style={{ marginLeft: 10 }}
                         onClick={() => {
-                          this.MoveUpHandler(index);
+                          this.FirstMoveUpHandler(index);
                         }}
                       >
                         MoveUp
@@ -209,273 +252,59 @@ class Form extends Component {
                         MoveDown
                       </button>
                     </>
-                  ) : (
-                    <></>
-                  )}
-                  {index === 0 && TaskList.length > 1 ? (
+                  ) : index!==0 && index!== TaskList.length-1 ? (
                     <>
-                      <button
+                    <button
+                    style={{ marginLeft: 10 }}
+                    onClick={() => {
+                      this.MoveUpHandler(index);
+                    }}
+                  >
+                    MoveUp
+                  </button>
+                  <button
+                    style={{ marginLeft: 5 }}
+                    onClick={() => {
+                      this.MoveDownHandler(index);
+                    }}
+                  >
+                    MoveDown
+                  </button>
+                  </>
+                  ):(<></>)}
+                  {index ==TaskList.length-1 && TaskList.length!==1  ?  (
+                    <>  
+                    <button
                         style={{ marginLeft: 5 }}
-                        onClick={() => {
-                          this.MoveDownHandler(index);
-                        }}
-                      >
-                        MoveDown
-                      </button>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                  {index === TaskList.length - 1 && index !== 0 ? (
-                    <>
-                      <button
-                        style={{ marginLeft: 10 }}
                         onClick={() => {
                           this.MoveUpHandler(index);
                         }}
                       >
                         MoveUp
                       </button>
+
+
+
+                      <button
+                        style={{ marginLeft: 5 }}
+                        onClick={() => {
+                          this.LastMoveDownHandler(index);
+                        }}
+                      >
+                        MoveDown
+                      </button>
                     </>
                   ) : (
-                    <></>
+                    <>
+                
+                  </>
                   )}
+                
                 {/* </div> */}
               </div>
             );
-          })) : SelectedOption=='ZtoA' ? (
-            TaskList.sort().reverse().map((task, index) => {
-            return (
-              <div key={index}>
-                
-                  <AllTasks tasks={task} />
-                  <button
-                    className="edit-btn"
-                    onClick={() => this.HandleEdit(index)}
-                  >
-                    <AiFillEdit />
-                    Edit
-                  </button>
-                  <button
-                    className="delete-btn"
-                    onClick={() => this.DeleteHandler(index)}
-                  >
-                    <AiFillDelete />
-                    Delete
-                  </button>
-
-                  {index !== 0 && index !== TaskList.length - 1 ? (
-                    <>
-                      <button
-                        style={{ marginLeft: 10 }}
-                        onClick={() => {
-                          this.MoveUpHandler(index);
-                        }}
-                      >
-                        MoveUp
-                      </button>
-                      <button
-                        style={{ marginLeft: 5 }}
-                        onClick={() => {
-                          this.MoveDownHandler(index);
-                        }}
-                      >
-                        MoveDown
-                      </button>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                  {index === 0 && TaskList.length > 1 ? (
-                    <>
-                      <button
-                        style={{ marginLeft: 5 }}
-                        onClick={() => {
-                          this.MoveDownHandler(index);
-                        }}
-                      >
-                        MoveDown
-                      </button>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                  {index === TaskList.length - 1 && index !== 0 ? (
-                    <>
-                      <button
-                        style={{ marginLeft: 10 }}
-                        onClick={() => {
-                          this.MoveUpHandler(index);
-                        }}
-                      >
-                        MoveUp
-                      </button>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                
-              </div>
-            );
-          })) : SelectedOption=='0' ?
-          (
-            TaskList.map((task, index) => {
-            return (
-              <div key={index}>
-                
-                  <AllTasks tasks={task} />
-                  <button
-                    className="edit-btn"
-                    onClick={() => this.HandleEdit(index)}
-                  >
-                    <AiFillEdit />
-                    Edit
-                  </button>
-                  <button
-                    className="delete-btn"
-                    onClick={() => this.DeleteHandler(index)}
-                  >
-                    <AiFillDelete />
-                    Delete
-                  </button>
-
-                  {index !== 0 && index !== TaskList.length - 1 ? (
-                    <>
-                      <button
-                        className="moveup"
-                        style={{ marginLeft: 10 }}
-                        onClick={() => {
-                          this.MoveUpHandler(index);
-                        }}
-                      >
-                        MoveUp
-                      </button>
-                      <button
-                      className="movedown"
-                        style={{ marginLeft: 5 }}
-                        onClick={() => {
-                          this.MoveDownHandler(index);
-                        }}
-                      >
-                        MoveDown
-                      </button>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                  {index === 0 && TaskList.length > 1 ? (
-                    <>
-                      <button
-                      className="movedown"
-                        style={{ marginLeft: 5 }}
-                        onClick={() => {
-                          this.MoveDownHandler(index);
-                        }}
-                      >
-                        MoveDown
-                      </button>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                  {index === TaskList.length - 1 && index !== 0 ? (
-                    <>
-                      <button
-                        className="movedown"
-                        style={{ marginLeft: 10 }}
-                        onClick={() => {
-                          this.MoveUpHandler(index);
-                        }}
-                      >
-                        MoveUp
-                      </button>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                
-              </div>
-            );
-          })):(
-            TaskList.map((task, index) => {
-            return (
-              <div key={index}>
-                
-                  <AllTasks tasks={task} />
-                  <button
-                    className="edit-btn"
-                    onClick={() => this.HandleEdit(index)}
-                  >
-                    <AiFillEdit />
-                    Edit
-                  </button>
-                  <button
-                    className="delete-btn"
-                    onClick={() => this.DeleteHandler(index)}
-                  >
-                    <AiFillDelete />
-                    Delete
-                  </button>
-
-                  {index !== 0 && index !== TaskList.length - 1 ? (
-                    <>
-                      <button
-                       className="moveup"
-                        style={{ marginLeft: 10 }}
-                        onClick={() => {
-                          this.MoveUpHandler(index);
-                        }}
-                      >
-                        MoveUp
-                      </button>
-                      <button
-                       className="movedown"
-                        style={{ marginLeft: 5 }}
-                        onClick={() => {
-                          this.MoveDownHandler(index);
-                        }}
-                      >
-                        MoveDown
-                      </button>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                  {index === 0 && TaskList.length > 1 ? (
-                    <>
-                      <button
-                        className="movedown"
-                        style={{ marginLeft: 5 }}
-                        onClick={() => {
-                          this.MoveDownHandler(index);
-                        }}
-                      >
-                        MoveDown
-                      </button>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                  {index === TaskList.length - 1 && index !== 0 ? (
-                    <>
-                      <button
-                        className="moveup"
-                        style={{ marginLeft: 10 }}
-                        onClick={() => {
-                          this.MoveUpHandler(index);
-                        }}
-                      >
-                        MoveUp
-                      </button>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                
-              </div>
-            );
-          }))
-        }
+          })}
+          
 
         
           
